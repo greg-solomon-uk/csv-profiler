@@ -1,6 +1,6 @@
 # python script to do data profiling on a group of csv files in a folder
 # it should write the results to a new csv called _data_profile.csv
-# this csv should have columns: file_name, field_name, count_of_nulls, count_of_distinct_values, min_value, max_value, data_type, sql_data_type, count_of_non_nulls, percent_nulls, most_frequent_value, frequency_of_most_common, mean_value, median_value, std_deviation, min_length, max_length, pattern_sample, is_unique, is_constant, smallest_five_values, largest_five_values
+# this csv should have columns: file_name, field_name, count_of_nulls, count_of_distinct_values, min_value, max_value, data_type, sql_data_type, count_of_non_nulls, percent_nulls, most_frequent_value, frequency_of_most_common, mean_value, median_value, std_deviation, min_length, max_length, pattern_sample, is_unique, is_constant, smallest_five_values, largest_five_values, five_most_frequent_values
 
 import os
 import pandas as pd
@@ -69,6 +69,7 @@ for file_name in os.listdir(folder_path):
             largest_five_values = sorted(str_series.unique())[-5:]
 
             pattern_sample = ', '.join(str_series.sample(min(3, len(str_series)), random_state=1).unique()) if not str_series.empty else None
+            five_most_frequent_values = series.value_counts().head(5).to_dict()
 
             profile_data.append({
                 'file_name': file_name,
@@ -92,7 +93,8 @@ for file_name in os.listdir(folder_path):
                 'max_length': max_length,
                 'pattern_sample': pattern_sample,
                 'smallest_five_values': smallest_five_values,
-                'largest_five_values': largest_five_values
+                'largest_five_values': largest_five_values,
+                'five_most_frequent_values': five_most_frequent_values
             })
 
 # Create a DataFrame from the profiling results
