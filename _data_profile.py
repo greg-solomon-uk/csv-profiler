@@ -69,7 +69,11 @@ for file_name in os.listdir(folder_path):
             largest_five_values = sorted(str_series.unique())[-5:]
 
             pattern_sample = ', '.join(str_series.sample(min(3, len(str_series)), random_state=1).unique()) if not str_series.empty else None
-            five_most_frequent_values = series.value_counts().head(5).to_dict()
+
+            # Compute five most frequent values excluding those with frequency 1
+            value_counts = series.value_counts()
+            filtered_counts = value_counts[value_counts > 1].head(5)
+            five_most_frequent_values = filtered_counts.to_dict()
 
             profile_data.append({
                 'file_name': file_name,
