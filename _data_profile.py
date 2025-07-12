@@ -33,7 +33,7 @@ def detect_sql_type(series):
 
 # Iterate over all CSV files in the folder
 for file_name in os.listdir(folder_path):
-    if file_name.endswith('.csv'):
+    if file_name != "_data_profile.csv" and file_name.endswith('.csv'):
         file_path = os.path.join(folder_path, file_name)
         try:
             df = pd.read_csv(file_path)
